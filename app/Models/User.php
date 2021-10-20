@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use App\Notifications\ResetPassword;
 use App\Notifications\VerifyEmail;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable implements MustVerifyEmail, JWTSubject
 {
@@ -67,5 +68,14 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
    public function getJWTCustomClaims()
    {
       return [];
+   }
+
+   protected static function boot()
+   {
+      parent::boot();
+
+      self::creating(function ($model) {
+         $model->slug = Str::slug($model->name);
+      });
    }
 }

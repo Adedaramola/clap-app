@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Contracts\EloquentInterface;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 class Repository implements EloquentInterface
 {
@@ -41,5 +42,14 @@ class Repository implements EloquentInterface
    public function find($id): ?Model
    {
       return $this->model->find($id);
+   }
+
+   /**
+    * 
+    * @return Collection
+    */
+   public function all(): Collection
+   {
+      return $this->model->all();
    }
 }

@@ -2,6 +2,7 @@
 namespace App\Contracts;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 interface EloquentInterface {
 
@@ -20,4 +21,10 @@ interface EloquentInterface {
     * @return Model
     */
    public function find($id): ?Model;
+
+   /**
+    * 
+    * @return Collection
+    */
+   public function all(): Collection;
 }

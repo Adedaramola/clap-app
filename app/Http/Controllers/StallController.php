@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\Stall;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class StallController extends Controller
 {
@@ -14,12 +16,13 @@ class StallController extends Controller
       return $this->sendResponse($stalls);
    }
 
-   public function show($id)
+   public function show(User $user)
    {
-      $stall = User::where('is_stall', true)->where('id', $id)->get();
-      
-      if($stall){
-         return new UserResource($stall);
-      }
+      $stall = DB::table('users')
+         ->where('slug', $user->slug)
+         ->where('is_stall')
+         ->get();
+
+      return $this->sendResponse($stall);
    }
 }

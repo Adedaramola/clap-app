@@ -4,7 +4,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\VerifyEmailController;
-use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\Ecommerce\ProductsController;
 use App\Http\Controllers\StallController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\Wallet\WalletController;
@@ -22,8 +22,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('stalls', [StallController::class, 'index']);
-Route::get('stalls/{id}', [StallController::class, 'show']);
-// Route::get('{stall:name}/products');
+Route::get('stalls/{slug}', [StallController::class, 'show']);
+Route::get('{stall:slug}/products', [ProductsController::class, 'show']);
 
 Route::group(['prefix' => 'auth', 'middleware' => 'guest'], function () {
    Route::post('register', [RegisterController::class, 'store']);
@@ -46,8 +46,6 @@ Route::middleware(['auth'])->group(function () {
 
       Route::middleware(['stall'])->group(function () {
          Route::post('products', [ProductsController::class, 'store']);
-         Route::put('products/{product}', [ProductsController::class, 'update']);
-         Route::delete('products/{product}', [ProductsController::class, 'delete']);
       });
 
       Route::post('wallet/transfer', [WalletController::class, 'transfer']);

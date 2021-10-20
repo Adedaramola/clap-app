@@ -21,7 +21,7 @@ class WalletService
 
       try {
          DB::table('wallets')
-            ->where('id', $wallet_id)
+            ->where('tag', $wallet_id)
             ->increment('balance', $amount);
 
          Transaction::create(
@@ -68,7 +68,7 @@ class WalletService
 
       try {
          DB::table('wallets')
-            ->where('id', $wallet_id)
+            ->where('tag', $wallet_id)
             ->decrement('balance', $amount);
 
          Transaction::create(
@@ -92,8 +92,8 @@ class WalletService
 
    public function transfer($sender_id, $receiver_id, $amount)
    {
-      $wallet1 = Wallet::where('id', $sender_id)->first();
-      $wallet2 = Wallet::where('id', $receiver_id)->first();
+      $wallet1 = Wallet::where('tag', $sender_id)->first();
+      $wallet2 = Wallet::where('tag', $receiver_id)->first();
 
       if (!($wallet1 && $wallet2)) {
          return response()->json([
@@ -105,7 +105,7 @@ class WalletService
 
       if ($sender_id === $receiver_id) {
          return response()->json([
-            'success' => false,
+            'status' => false,
             'message' => 'Impossible action'
          ]);
       }
@@ -119,7 +119,7 @@ class WalletService
             $this->debit($amount, $sender_id);
          } catch (\Exception $e) {
             return response()->json([
-               'success' => false,
+               'status' => false,
                'message' => $e->getMessage()
             ]);
          }
@@ -129,14 +129,14 @@ class WalletService
          DB::commit();
 
          return response()->json([
-            'success' => true,
+            'status' => true,
             'message' => 'Transfer successful'
          ]);
       } catch (\Exception $e) {
          DB::rollBack();
 
          return response()->json([
-            'success' => false,
+            'status' => false,
             'message' => $e->getMessage()
          ], 500);
       }

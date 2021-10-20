@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Contracts\ProductInterface;
 use App\Models\Product;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 class ProductRepository extends Repository implements ProductInterface
@@ -25,5 +26,10 @@ class ProductRepository extends Repository implements ProductInterface
    public function all(): Collection
    {
       return $this->product->all();
+   }
+
+   public function create(array $attributes): Model
+   {
+      return $this->product->create($attributes);
    }
 }

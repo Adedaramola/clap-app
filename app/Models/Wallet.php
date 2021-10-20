@@ -9,7 +9,7 @@ class Wallet extends Model
 {
    use HasFactory;
 
-   protected $fillable = ['tag'];
+   protected $fillable = ['tag','balance'];
 
 
    public function user()
